@@ -2,6 +2,10 @@
 
 The original rules can be found at the [Rulebook 2011](https://athome.robocup.org/wp-content/uploads/2018/10/2011_rulebook.pdf#section.4.3)
 
+## Flowchart
+![go_get_it](https://user-images.githubusercontent.com/22964725/111549156-04228e00-877c-11eb-9f0e-1f32a715a969.png)
+
+
 ## Start of the task - Navigation and Human Interaction
 
 The robot waits the _start signal_: opening the door in front of him.

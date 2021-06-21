@@ -31,7 +31,7 @@ import lifecycle_msgs.msg
 
 def generate_launch_description():
     # Get the launch directory
-    pkg_dir = get_package_share_directory('clean_up')
+    pkg_dir = get_package_share_directory('go_get_it')
     nav_dir = get_package_share_directory('gb_navigation')
     manipulation_dir = get_package_share_directory('gb_manipulation')
     gb_world_model_dir = get_package_share_directory('gb_world_model')
@@ -84,29 +84,29 @@ def generate_launch_description():
     )
 
     # Specify the actions
-    clean_up_executor_cmd = LifecycleNode(
-        package='clean_up',
-        executable='cleanup_executor_node',
-        name='cleanup_executor_node')
+    go_get_it_executor_cmd = LifecycleNode(
+        package='go_get_it',
+        executable='gogetit_executor_node',
+        name='gogetit_executor_node')
         
-    emit_event_to_request_that_clean_up_executor_configure_transition = EmitEvent(
+    emit_event_to_request_that_go_get_it_executor_configure_transition = EmitEvent(
         event=ChangeState(
-            lifecycle_node_matcher=launch.events.matches_action(clean_up_executor_cmd),
+            lifecycle_node_matcher=launch.events.matches_action(go_get_it_executor_cmd),
             transition_id=lifecycle_msgs.msg.Transition.TRANSITION_CONFIGURE,
         )
     )
 
-    emit_event_to_request_that_clean_up_executor_activate_transition = EmitEvent(
+    emit_event_to_request_that_go_get_it_executor_activate_transition = EmitEvent(
         event=ChangeState(
-            lifecycle_node_matcher=launch.events.matches_action(clean_up_executor_cmd),
+            lifecycle_node_matcher=launch.events.matches_action(go_get_it_executor_cmd),
             transition_id=lifecycle_msgs.msg.Transition.TRANSITION_ACTIVATE,
         )
     )
 
-    on_configure_clean_up_executor_handler = RegisterEventHandler(
+    on_configure_go_get_it_executor_handler = RegisterEventHandler(
         OnStateTransition(
-            target_lifecycle_node=clean_up_executor_cmd, goal_state='inactive',
-            entities=[emit_event_to_request_that_clean_up_executor_activate_transition]))
+            target_lifecycle_node=go_get_it_executor_cmd, goal_state='inactive',
+            entities=[emit_event_to_request_that_go_get_it_executor_activate_transition]))
 
  
     # Specify the dependencies
@@ -114,6 +114,7 @@ def generate_launch_description():
       package='clean_up',
       executable='vision_sim_node',
       name='vision')
+
     emit_event_to_request_that_vision_configure_transition = EmitEvent(
         event=ChangeState(
             lifecycle_node_matcher=launch.events.matches_action(vision_cmd),
@@ -144,16 +145,16 @@ def generate_launch_description():
     # Declare the launch options
 
     # Event handlers
-    ld.add_action(on_configure_clean_up_executor_handler)
+    ld.add_action(on_configure_go_get_it_executor_handler)
 
     ld.add_action(gb_manipulation_cmd)
     ld.add_action(gb_navigation_cmd)
     ld.add_action(plansys2_cmd)
-    ld.add_action(clean_up_executor_cmd)
+    ld.add_action(go_get_it_executor_cmd)
     ld.add_action(vision_cmd)
 
     ld.add_action(emit_event_to_request_that_vision_configure_transition)
-    ld.add_action(emit_event_to_request_that_clean_up_executor_configure_transition)
+    ld.add_action(emit_event_to_request_that_go_get_it_executor_configure_transition)
 
     ld.add_action(attention_manager_cmd)
     ld.add_action(wm_cmd)

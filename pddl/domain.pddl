@@ -2,18 +2,19 @@
 (:requirements :strips :typing :fluents :durative-actions :negative-preconditions)
 
 ;; Types ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(:types    
-    zone
+(:types
+    object
+    robot
 );; end Types ;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; Predicates ;;;;;;;;;;;;;;;;;;;;;;;;;
-(:predicates    
-	( are_connected ?z_from ?z_to - zone)	
-	( is_at ?z - zone)	
-	( is_search_zone ?z - zone)	
-	( is_found_at ?z - zone)
-	( is_pick_zone ?z - zone)	
-	( is_picked_at ?z - zone)
+(:predicates
+	( is_target ?o - object)
+	( is_picked ?o - object)
+	( is_found ?o - object)
+	( is_free ?r - robot)	
+	( is_delivered ?o - object) 	
+
 );; end Predicates ;;;;;;;;;;;;;;;;;;;;
 
 
@@ -23,41 +24,39 @@
 ;;);; end Functions ;;;;;;;;;;;;;;;;;;;;
 
 ;; Actions ;;;;;;;;;;;;;;;;;;;;;;;;;;;; 
-(:durative-action move_from_to
-    :parameters (?from ?to - zone)
+(:durative-action search
+    :parameters (?o - object)
     :duration ( = ?duration 5)
     :condition (and
-        (over all(are_connected ?from ?to))
-        (at start(is_at ?from))
-    )
-    :effect (and      
-        (at end(is_at ?to))
-        (at start(not(is_at ?from)))
-    )
-)
-
-(:durative-action search_at
-    :parameters ( ?z - zone )
-    :duration ( = ?duration 5)
-    :condition (and
-        (at start(is_at ?z))
-        (at start(is_search_zone ?z))
-    )
-    :effect (and      
-        (at end(is_found_at ?z))
-    )
-)
-
-(:durative-action pick_at
-    :parameters ( ?z - zone)
-    :duration ( = ?duration 5)
-    :condition (and   
-        (over all(is_found_at ?z))  
-        (over all(is_pick_zone ?z))  
-        (at start(is_at ?z))
     )
     :effect (and
-        (at end(is_picked_at ?z)) 
+        (at end(is_found ?o))
+    )
+)
+
+(:durative-action pick
+    :parameters (?r - robot ?o - object)
+    :duration ( = ?duration 5)
+    :condition (and
+        (over all(is_found ?o)) 
+        (at start(is_free ?r))
+    )
+    :effect (and      
+        (at end(is_picked ?o))
+        (at start(not (is_free ?r)))
+    )
+)
+
+(:durative-action deliver
+    :parameters (?r - robot ?o - object)
+    :duration ( = ?duration 5)
+    :condition (and   
+        (over all(is_target ?o))            
+        (at start(is_picked ?o))
+    )
+    :effect (and
+        (at end(is_delivered ?o)) 
+        (at end(is_free ?r))
     )
 )
 

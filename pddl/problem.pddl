@@ -10,9 +10,11 @@
 		(is_target sugar_box)
 		(is_free jarvis)
 	)
+
 	( :goal
 		(and
 			(is_delivered sugar_box)
 		)	
 	)
+	
 )

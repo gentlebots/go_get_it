@@ -78,7 +78,7 @@ void GoGetItHFSM::tick()
       if (PickObject_2_DeliverObject()) {
         deactivateAllDeps();
 
-        state_ = PLACEOBJECT;
+        state_ = DELIVEROBJECT;
         state_ts_ = now();
 
         DeliverObject_activateDeps();

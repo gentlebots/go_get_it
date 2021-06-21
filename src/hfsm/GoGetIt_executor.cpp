@@ -21,6 +21,7 @@ void GoGetIt_executor::initKnowledge()
   problem_expert_->addInstance(plansys2::Instance{"jarvis", "robot"});
   problem_expert_->addInstance(plansys2::Instance{"object1", "object"});
   problem_expert_->addPredicate(plansys2::Predicate("(is_free jarvis)"));
+  problem_expert_->addPredicate(plansys2::Predicate("(is_target object1)"));
 
   // mfc : faltaría añadir:
   //  - Qué objeto buscamos: target

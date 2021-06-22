@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
-project(clean_up)
+project(go_get_it)
 
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
